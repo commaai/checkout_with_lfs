@@ -1,0 +1,36 @@
+name: 'checkout with lfs'
+description: 'chain checkout + git lfs pull'
+# using checkout with lfs: true is flaky, sometimes it will not replace pointers with files
+# see https://github.com/actions/checkout/pull/1392
+inputs:
+  submodules:
+    description: ''
+    required: false
+    default: 'false'
+  lfs:
+    description: ''
+    required: false
+    default: 'false'
+  clean:
+    description: ''
+    required: false
+    default: 'false'
+  fetch-depth:
+    description: ''
+    required: false
+    default: '1'
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        submodules: ${{ inputs.submodules }}
+        lfs: ${{ inputs.lfs }}
+        clean: ${{ inputs.clean }}
+        fetch-depth: ${{ inputs.fetch-depth }}
+
+    - name: git lfs pull
+      if: ${{ inputs.lfs == 'true' }}
+      run: git lfs pull
+      shell: bash
