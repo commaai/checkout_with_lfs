@@ -19,6 +19,10 @@ inputs:
     description: ''
     required: false
     default: '1'
+  sparse-checkout:
+    description: ''
+    required: false
+    default: 'null'
 runs:
   using: "composite"
   steps:
@@ -29,6 +33,7 @@ runs:
         lfs: ${{ inputs.lfs }}
         clean: ${{ inputs.clean }}
         fetch-depth: ${{ inputs.fetch-depth }}
+        sparse-checkout: ${{ inputs.sparse-checkout }}
 
     - name: git lfs pull
       if: ${{ inputs.lfs == 'true' }}
